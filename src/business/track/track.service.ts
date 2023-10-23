@@ -5,7 +5,7 @@ import { Model, ObjectId } from 'mongoose';
 import { CommentDocument, Comment } from './model/comments';
 import { CreateTrackDTO } from './dto/create-track.dto';
 import { CreateCommentDTO } from './dto/create-comment.dto';
-import { FilesService, FilesType } from 'src/files/files.service';
+import { FilesService, FilesType } from 'src/business/files/files.service';
 
 @Injectable()
 export class TrackServise {

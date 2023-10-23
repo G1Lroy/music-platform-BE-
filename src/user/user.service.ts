@@ -9,7 +9,7 @@ import * as bcrypt from 'bcrypt';
 export class UserService {
   constructor(@InjectModel('User') private userModel: Model<User>) {}
 
-  async createUser(dto: CreateUserDTO): Promise<User> {
+  async createUser(dto: CreateUserDTO): Promise<any> {
     const isEmailTaken = await this.findUserByEmail(dto.email);
 
     if (!isEmailTaken) {
@@ -18,7 +18,9 @@ export class UserService {
         email: dto.email,
         password: hashPass,
       });
-      return createdUser.save();
+      await createdUser.save();
+
+      return createdUser;
     }
     throw new BadRequestException('Email alredy exist');
   }
@@ -27,8 +29,8 @@ export class UserService {
     return await this.userModel.findOne({ email }).exec();
   }
 
-  async getUsers(): Promise<User[]> {
-    return;
+  async getUsers(): Promise<User[] | string> {
+    return 'all users [...]';
     // return await this.userModel.find().select('email');
   }
 }

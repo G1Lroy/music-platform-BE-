@@ -10,7 +10,7 @@ import { User } from './model/user';
 import { UserService } from './user.service';
 import { CreateUserDTO } from './dto/create-user.dto';
 
-@Controller('/register')
+@Controller('register')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
@@ -20,7 +20,7 @@ export class UserController {
     return this.userService.createUser(dto);
   }
   @Get()
-  async getUsers(): Promise<User[]> {
+  async getUsers(): Promise<User[] | string> {
     return this.userService.getUsers();
   }
 }

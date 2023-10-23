@@ -15,7 +15,7 @@ import { ObjectId } from 'mongoose';
 import { CreateCommentDTO } from './dto/create-comment.dto';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 
-@Controller('/tracks')
+@Controller('tracks')
 export class TrackController {
   constructor(private trackService: TrackServise) {}
 
@@ -40,7 +40,7 @@ export class TrackController {
     return this.trackService.getAll(count, ofset);
   }
   
-  @Get('/search')
+  @Get('search')
   search(@Query('query') query: string) {
     return this.trackService.search(query);
   }
@@ -55,12 +55,12 @@ export class TrackController {
     return this.trackService.delete(id);
   }
 
-  @Post('/comment')
+  @Post('comment')
   addComment(@Body() dto: CreateCommentDTO) {
     return this.trackService.addComment(dto);
   }
 
-  @Post('/listen/:id')
+  @Post('listen/:id')
   incrementListenCount(@Param('id') id: ObjectId) {
     return this.trackService.incrementListenCount(id);
   }
