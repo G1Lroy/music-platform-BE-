@@ -2,7 +2,7 @@ import {
   Controller,
   Post,
   Body,
-  Get,
+  
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
@@ -18,9 +18,5 @@ export class UserController {
   @UsePipes(new ValidationPipe())
   async registerUser(@Body() dto: CreateUserDTO): Promise<User> {
     return this.userService.createUser(dto);
-  }
-  @Get()
-  async getUsers(): Promise<User[] | string> {
-    return this.userService.getUsers();
   }
 }
