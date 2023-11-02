@@ -14,11 +14,9 @@ export class AuthService {
 
   async validateUser(email: string, password: string): Promise<User | void> {
     const user = await this.usersService.findUserByEmail(email);
+    if (!user) throw new BadRequestException('User not register');
     const isPassMatch = await bcrypt.compare(password, user.password);
-
-    if (!user || !isPassMatch) {
-      throw new BadRequestException('Incorrect email or password');
-    }
+    if (!isPassMatch) throw new BadRequestException('Incorrect password');
 
     return user;
   }

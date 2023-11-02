@@ -12,22 +12,19 @@ export class UserService {
   async createUser(dto: CreateUserDTO): Promise<any> {
     const isEmailTaken = await this.findUserByEmail(dto.email);
 
-    if (!isEmailTaken) {
-      const hashPass = await bcrypt.hash(dto.password, 5);
-      const createdUser = new this.userModel({
-        email: dto.email,
-        password: hashPass,
-      });
-      await createdUser.save();
-
-      return createdUser;
+    if (isEmailTaken) {
+      throw new BadRequestException('Email alredy exist');
     }
-    throw new BadRequestException('Email alredy exist');
+    const hashPass = await bcrypt.hash(dto.password, 5);
+    const createdUser = new this.userModel({
+      email: dto.email,
+      password: hashPass,
+    });
+    await createdUser.save();
+    return createdUser;
   }
 
   async findUserByEmail(email: string): Promise<User | null> {
     return await this.userModel.findOne({ email }).exec();
   }
-
- 
 }
