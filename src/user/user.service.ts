@@ -27,4 +27,20 @@ export class UserService {
   async findUserByEmail(email: string): Promise<User | null> {
     return await this.userModel.findOne({ email }).exec();
   }
+  async deleteUser(id: string) {
+    try {
+      await this.userModel.deleteOne({ _id: id });
+    } catch (error) {
+      throw new BadRequestException(error.message, 'Cant find user');
+    }
+    return 'User deleted successfully';
+  }
+  async getUserProfile(id: string) {
+    try {
+      const user = await this.userModel.findById({ _id: id });
+      return user;
+    } catch (error) {
+      throw new BadRequestException('Cant find user');
+    }
+  }
 }
