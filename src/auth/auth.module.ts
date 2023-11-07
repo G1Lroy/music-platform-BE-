@@ -6,6 +6,7 @@ import { LocalStrategy } from './strategy/local.strategy';
 import { AuthController } from './auth.controller';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './strategy/jwt.strategy';
+import { GithubOauthModule } from './github/github.module';
 require('dotenv').config();
 
 @Module({
@@ -16,6 +17,7 @@ require('dotenv').config();
       secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: '7d' },
     }),
+    GithubOauthModule,
   ],
   providers: [AuthService, LocalStrategy, JwtStrategy],
   controllers: [AuthController],
