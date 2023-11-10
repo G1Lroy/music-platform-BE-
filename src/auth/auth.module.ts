@@ -18,6 +18,7 @@ require('dotenv').config();
       signOptions: { expiresIn: '7d' },
     }),
     GithubOauthModule,
+   
   ],
   providers: [AuthService, LocalStrategy, JwtStrategy],
   controllers: [AuthController],

@@ -1,11 +1,16 @@
 import { Module } from '@nestjs/common';
-import { UserModule } from 'src/user/user.module';
-import { GithubOauthStrategy } from './github.strategy';
-import { GithubOauthController } from './github.controller';
+import { GithubController } from './github.controller';
+import { GithubService } from './github.service';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
-  imports: [UserModule],
-  controllers: [GithubOauthController],
-  providers: [GithubOauthStrategy],
+  // imports: [
+  //   JwtModule.register({
+  //     secret: process.env.JWT_SECRET,
+  //     signOptions: { expiresIn: '7d' },
+  //   }),
+  // ],
+  controllers: [GithubController],
+  providers: [GithubService],
 })
 export class GithubOauthModule {}

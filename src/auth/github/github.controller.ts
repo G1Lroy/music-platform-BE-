@@ -1,22 +1,31 @@
-import { Controller, UseGuards, Get, Req, Res } from '@nestjs/common';
-import { GithubOauthGuard } from './github.guard';
-import { Request, Response } from 'express';
+import { Controller, Get, Req, Res, UseGuards } from '@nestjs/common';
+import { GithubService } from './github.service';
 
-@Controller('auth/github')
-export class GithubOauthController {
-  constructor() {}
 
-  @Get()
-  @UseGuards(GithubOauthGuard)
-  async githubAuth() {}
+@Controller('auth')
+export class GithubController {
+  constructor(
+    private readonly githubService: GithubService,
+  ) {}
+  @Get('github/getProfile')
+  async getProfileData(@Req() request, @Res() res) {
+    const token = request.headers.authorization;
+    try {
+      const profileData = await this.githubService.getProfileData(token);
+      return res.json(profileData);
+    } catch (error) {
+      return res.json(error);
+    }
+  }
 
-  @Get('callback')
-  @UseGuards(GithubOauthGuard)
-  async githubAuthCallback(
-    @Req() req: Request,
-    @Res({ passthrough: true }) res: Response,
-  ) {
-    const user = req.user;
-    res.json(user);
+  @Get('github/getAccess')
+  async getAccessToken(@Req() req, @Res() res) {
+    const code = req.query.code;
+    try {
+      const accessToken = await this.githubService.getAccessToken(code);
+      return res.json(accessToken);
+    } catch (error) {
+      return res.json(error);
+    }
   }
 }

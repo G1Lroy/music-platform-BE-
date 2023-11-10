@@ -21,7 +21,7 @@ export class UserController {
   @Post('register')
   @UsePipes(new ValidationPipe())
   async registerUser(@Body() dto: CreateUserDTO): Promise<User> {
-    return this.userService.createUser(dto);
+    return this.userService.createAndCheckUser(dto);
   }
   @Get('profile/:id')
   @UseGuards(JwtAuthGuard)
