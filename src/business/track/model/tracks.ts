@@ -8,7 +8,7 @@ export type TrackDocument = HydratedDocument<Track>;
 @Schema()
 export class Track {
   @Prop()
-  name: string;
+  title: string;
 
   @Prop()
   artist: string;
@@ -20,7 +20,7 @@ export class Track {
   listensCount: number;
 
   @Prop()
-  picture: string;
+  image: string;
 
   @Prop()
   audio: string;

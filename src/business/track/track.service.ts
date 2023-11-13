@@ -16,16 +16,16 @@ export class TrackServise {
   ) {}
   async create(
     dto: CreateTrackDTO,
-    picture: Express.Multer.File,
+    image: Express.Multer.File,
     audio: Express.Multer.File,
   ): Promise<Track> {
     const audioFile = this.fileService.createFile(FilesType.AUDIO, audio);
-    const pictureFile = this.fileService.createFile(FilesType.IMAGE, picture);
+    const imageFile = this.fileService.createFile(FilesType.IMAGE, image);
     const track = await this.trackModel.create({
       ...dto,
       listensCount: 0,
       audio: audioFile,
-      picture: pictureFile,
+      image: imageFile,
     });
     return track;
   }
