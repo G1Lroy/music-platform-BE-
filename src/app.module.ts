@@ -5,6 +5,7 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { resolve } from 'path';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
+import { FilesModule } from './business/files/files.module';
 require('dotenv').config();
 
 const pass = process.env.MONGO_PASS;
@@ -18,6 +19,7 @@ const pass = process.env.MONGO_PASS;
       `mongodb+srv://admin:${pass}@cluster0.frapq5s.mongodb.net/?retryWrites=true&w=majority`,
     ),
     AuthModule,
+    FilesModule,
   ],
   controllers: [],
   providers: [],
