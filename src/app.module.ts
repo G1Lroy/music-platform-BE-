@@ -14,12 +14,12 @@ const pass = process.env.MONGO_PASS;
   imports: [
     UserModule,
     TrackModule,
-    FilesModule,
     AuthModule,
     ServeStaticModule.forRoot({ rootPath: resolve(__dirname, 'static') }),
     MongooseModule.forRoot(
       `mongodb+srv://admin:${pass}@cluster0.frapq5s.mongodb.net/?retryWrites=true&w=majority`,
     ),
+    FilesModule,
   ],
   controllers: [],
   providers: [],

@@ -6,7 +6,6 @@ import { CommentDocument, Comment } from './model/comments';
 import { CreateTrackDTO } from './dto/create-track.dto';
 import { CreateCommentDTO } from './dto/create-comment.dto';
 import { FilesService } from 'src/business/files/files.service';
-import { Schema, InferSchemaType, Types } from 'mongoose';
 
 export interface CustomTrack {
   _id?: string;
@@ -52,26 +51,14 @@ export class TrackServise {
       const updatedTrack: CustomTrack = { ...track.toObject() };
       delete updatedTrack.image;
       delete updatedTrack.audio;
-      updatedTrack.audio = `/static/audio/${track.title}`;
-      updatedTrack.image = `/static/image/${track.title}`;
+      updatedTrack.audio = `audio/${track.title}.${track.fileExtension.audio}`;
+      updatedTrack.image = `image/${track.title}.${track.fileExtension.image}`;
 
       return updatedTrack;
     });
     return updatedTracks;
   }
-  // updateTracksDocument(
-  //   data: [] | InferSchemaType<(typeof Track)[]>,
-  // ): CustomTrack[] {
-  //   const updatedTracks = data.map((track) => {
-  //     const updatedTrack: CustomTrack = { ...track.toObject() };
-  //     delete updatedTrack.image;
-  //     delete updatedTrack.audio;
-  //     updatedTrack.audio = `/static/audio/${track.title}`;
-  //     updatedTrack.image = `/static/image/${track.title}`;
-  //     return updatedTrack;
-  //   });
-  //   return updatedTracks;
-  // }
+
   async getOne(id: ObjectId): Promise<Track> {
     const track = await this.trackModel.findById(id).populate('comments');
     return track;
