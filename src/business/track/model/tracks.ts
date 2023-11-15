@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument } from 'mongoose';
+import mongoose, { HydratedDocument } from 'mongoose';
 import { Comment } from './comments';
 import { Types } from 'mongoose';
 
@@ -19,11 +19,14 @@ export class Track {
   @Prop()
   listensCount: number;
 
-  @Prop()
-  image: string;
+  @Prop({ type: mongoose.Schema.Types.Mixed })
+  fileExtension: { audio: string; image: string };
 
-  @Prop()
-  audio: string;
+  @Prop({ type: Buffer })
+  image: Buffer ;
+
+  @Prop({ type: Buffer })
+  audio: Buffer ;
 
   @Prop({ type: [{ type: Types.ObjectId, ref: 'Comment' }] })
   comments: Comment[];

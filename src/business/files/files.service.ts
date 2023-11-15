@@ -1,29 +1,45 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import * as fs from 'fs';
 import { resolve } from 'path';
-import { v4 } from 'uuid';
-
-export enum FilesType {
-  AUDIO = 'audio',
-  IMAGE = 'image',
-}
+import { Track } from '../track/model/tracks';
 
 @Injectable()
 export class FilesService {
-  createFile(type: FilesType, file: Express.Multer.File): string {
+  async getFileExtension(file: Express.Multer.File): Promise<string> {
+    const fileExtension = file.originalname.split('.').pop();
+    return fileExtension;
+  }
+  async saveFileStaticFolder(
+    buffer: Buffer,
+    fileExtension: string,
+    title: string,
+    type: string,
+  ) {
+    const filePath = resolve(__dirname, '../..', 'static', type);
+    const fileName = title + '.' + fileExtension;
     try {
-      const fileExtension = file.originalname.split('.').pop();      
-      const fileID = v4() + '.' + fileExtension;
-      const filePath = resolve(__dirname, '../..', 'static', type);
-      if (!fs.existsSync(filePath)) {
-        fs.mkdirSync(filePath, { recursive: true });
-      }
-      fs.writeFileSync(resolve(filePath, fileID), file.buffer);
-      return type + '/' + fileID;
-    } catch (e) {
-      throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR);
+      if (!fs.existsSync(filePath)) fs.mkdirSync(filePath, { recursive: true });
+      await fs.promises.writeFile(resolve(filePath, fileName), buffer);
+      return type + '/' + title;
+    } catch (error) {
+      console.error('Error writing file:', error);
+      throw error;
     }
   }
-
-  removeFile() {}
+  async decodeAllBuffers(tracksResponse: Track[]) {
+    for (const track of tracksResponse) {
+      await this.saveFileStaticFolder(
+        track.audio as Buffer,
+        track.fileExtension.audio,
+        track.title,
+        'audio',
+      );
+      await this.saveFileStaticFolder(
+        track.image as Buffer,
+        track.fileExtension.image,
+        track.title,
+        'image',
+      );
+    }
+  }
 }

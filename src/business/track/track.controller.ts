@@ -9,7 +9,7 @@ import {
   UploadedFiles,
   Query,
 } from '@nestjs/common';
-import { TrackServise } from './track.service';
+import { CustomTrack, TrackServise } from './track.service';
 import { CreateTrackDTO } from './dto/create-track.dto';
 import { ObjectId } from 'mongoose';
 import { CreateCommentDTO } from './dto/create-comment.dto';
@@ -36,10 +36,13 @@ export class TrackController {
   }
 
   @Get()
-  getAll(@Query('count') count: number, @Query('ofset') ofset: number) {
+  getAll(
+    @Query('count') count: number,
+    @Query('ofset') ofset: number,
+  ): Promise<CustomTrack[]> {
     return this.trackService.getAll(count, ofset);
   }
-  
+
   @Get('search')
   search(@Query('query') query: string) {
     return this.trackService.search(query);
