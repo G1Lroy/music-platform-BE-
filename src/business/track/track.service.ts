@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Track, TrackDocument } from './model/tracks';
+import { Track, TrackDocument } from './model/track';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, ObjectId } from 'mongoose';
 import { CommentDocument, Comment } from './model/comments';
@@ -47,18 +47,18 @@ export class TrackServise {
   async getAll(count = 10, ofset = 0): Promise<CustomTrack[]> {
     const allTracks = await this.trackModel.find().skip(ofset).limit(count);
     await this.fileService.decodeAllBuffers(allTracks);
+    // create new obj to client only usefull info
     const updatedTracks = allTracks.map((track) => {
       const updatedTrack: CustomTrack = { ...track.toObject() };
       delete updatedTrack.image;
       delete updatedTrack.audio;
+      delete updatedTrack.fileExtension;
       updatedTrack.audio = `audio/${track.title}.${track.fileExtension.audio}`;
       updatedTrack.image = `image/${track.title}.${track.fileExtension.image}`;
-
       return updatedTrack;
     });
     return updatedTracks;
   }
-
   async getOne(id: ObjectId): Promise<Track> {
     const track = await this.trackModel.findById(id).populate('comments');
     return track;

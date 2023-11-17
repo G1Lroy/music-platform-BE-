@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import * as fs from 'fs';
 import { resolve } from 'path';
-import { Track } from '../track/model/tracks';
+import { Track } from '../track/model/track';
 
 @Injectable()
 export class FilesService {

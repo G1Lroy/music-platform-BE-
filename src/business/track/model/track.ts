@@ -9,6 +9,9 @@ export type TrackDocument = HydratedDocument<Track>;
 export class Track {
   @Prop()
   title: string;
+  
+  @Prop()
+  userId: string;
 
   @Prop()
   artist: string;
@@ -23,10 +26,10 @@ export class Track {
   fileExtension: { audio: string; image: string };
 
   @Prop({ type: Buffer })
-  image: Buffer ;
+  image: Buffer;
 
   @Prop({ type: Buffer })
-  audio: Buffer ;
+  audio: Buffer;
 
   @Prop({ type: [{ type: Types.ObjectId, ref: 'Comment' }] })
   comments: Comment[];
