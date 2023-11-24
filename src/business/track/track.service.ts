@@ -79,9 +79,9 @@ export class TrackServise {
     track.listensCount++;
     track.save();
   }
-  async search(query: string): Promise<Track[]> {
+  async search(query: string): Promise<{_id:string}[]> {
     return await this.trackModel.find({
-      name: { $regex: new RegExp(query, 'i') },
-    });
+      title: { $regex: new RegExp(query, 'i') },
+    }).select('_id');
   }
 }
